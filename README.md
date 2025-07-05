@@ -56,11 +56,6 @@
 
 
 ### 5. Визуализация контекста системы — диаграмма С4
-
-Добавьте сюда диаграмму контекста в модели C4.
-
-Чтобы добавить ссылку в файл Readme.md, нужно использовать синтаксис Markdown. Это делают так:
-
 ```markdown
 [Ссылка на диаграмму контекста](https://editor.plantuml.com/uml/TL9DJyCm3BttLvYUXWJhXHEdmK20jA5gO-SfjAQDIE8eSJVuzpWR6q63Krn_lFVyt4ba5NYmfc3D1c5fvHCUoI9CoJ5-CDnfrGLbYuB90nEy4ZDPQ7N0XZMveZZJhZ53YqCmq3FxU5rLGMt7dUP-U1qYXYPXEHutPAk5RbHewLcZHrDDhovhenolvhFAgiWO9BMUalNaqeHFseeQGoGtIb0NKAxaAUMTwGr6q0wuH-X9gXUm5QoOP2RAG2885MlNWN8jH4HWj1w3uY58t0SQkZxVMdbVdX_ufDNG9mficRNSVsUJ1379YGrnJvzuiyRuAVjOWLlkWj6kb2g_y1BCd1mPSIlHmnk5WtgJbESR6ABtNSpv8aUAzVq7Zrv-2ZTU2tgMW9lwAH7MWJQw5VTQnGh8YJKk2kzlq6A1vjlqNBlu7tTA_x7PajDy0YPOwqLcQOwum4wdsnzyfFrDZmRUwlrqDdEovGFA6VvUOuAkbV_e2m00)
 ```
