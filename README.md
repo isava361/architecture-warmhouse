@@ -101,8 +101,8 @@
 
 ### 2. Документация API
 
-[REST-API](https://github.com/isava361/architecture-warmhouse/blob/warmhouse/kafka.yaml)
-[Kafka](https://github.com/isava361/architecture-warmhouse/blob/warmhouse/swagger.yaml)
+[REST-API](https://github.com/isava361/architecture-warmhouse/blob/warmhouse/apps/kafka.yaml)
+[Kafka](https://github.com/isava361/architecture-warmhouse/blob/warmhouse/apps/swagger.yaml)
 
 # Задание 5. Работа с docker и docker-compose
 
