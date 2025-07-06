@@ -15,7 +15,7 @@ tags:
 
   - name: Telemetry Manager Service
     description: Telemetry data
-
+    
 paths:
   /sensors:
     post:
@@ -25,7 +25,7 @@ paths:
       description: Create a new sensor by ID.
       operationId: createSensor
       requestBody:
-        description: Create a new sensor
+        description: Create a new sensor 
         content:
           application/json:
             schema:
@@ -55,7 +55,7 @@ paths:
     - name: sensorId
       in: path
       required: true
-      schema:
+      schema: 
         type: integer
         format: int64
     put:
@@ -65,7 +65,7 @@ paths:
       description: Update an existing sensor by ID.
       operationId: updateSensor
       requestBody:
-        description: Update an existent sensor
+        description: Update an existent sensor 
         content:
           application/json:
             schema:
@@ -113,7 +113,43 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/Error"    
+    patch:
+      tags:
+        - Sensor Manager Service
+      summary: Partially update a sensor
+      description: |
+        Частичное обновление свойств устройства с помощью JSON Merge Patch.
+        Передавайте **только** поля, которые нужно изменить.
+      operationId: patchSensor
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/SensorPatch'
+      responses:
+        '200':
+          description: Sensor updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sensor'
+        '400':
+          description: Invalid input
+        '404':
+          description: Sensor not found
+        '409':
+          description: Version conflict
+        '500':
+          description: Server error
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              
     delete:
       tags:
         - Sensor Manager Service
@@ -135,7 +171,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
+                
   /scenarios:
     post:
       tags:
@@ -324,7 +360,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
+  
 components:
   schemas:
     Error:
@@ -383,7 +419,7 @@ components:
           type: string
           description: "Дата и время последнего онлайна сенсора (UTC)"
           format: date-time
-
+          
     Scenario:
       required:
         - id
@@ -441,7 +477,7 @@ components:
           format: date-time
           description: "Дата и время создания сценария (UTC)"
           example: "2025-07-06T14:30:00Z"
-
+          
     Telemetry:
       required:
         - id
@@ -480,3 +516,25 @@ components:
           type: integer
           format: int64
           example: 25
+    SensorPatch:
+      type: object
+      description: |
+        Partial sensor update (JSON Merge Patch).  
+        Присутствуют **только** изменяемые поля.
+      properties:
+        room_id:
+          type: integer
+          format: int64
+          nullable: true
+          example: 10020
+        label:
+          type: string
+          example: "Heating in living room"
+        status:
+          type: string
+          enum: [ONLINE, OFFLINE, ERROR]
+          example: "OFFLINE"
+
+
+
+
