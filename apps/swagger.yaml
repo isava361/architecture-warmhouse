@@ -1,0 +1,540 @@
+openapi: 3.0.4
+info:
+  title: Smart Home API description
+  description: |-
+    This is a description of a sample API for the Smart Home API application
+
+  version: 1.0.0
+
+tags:
+  - name: Sensor Manager Service
+    description: Sensor adding, removing, status update
+
+  - name: Scenario Manager Service
+    description: Manage your scenarios
+
+  - name: Telemetry Manager Service
+    description: Telemetry data
+    
+paths:
+  /sensors:
+    post:
+      tags:
+        - Sensor Manager Service
+      summary: Create a new sensor.
+      description: Create a new sensor by ID.
+      operationId: createSensor
+      requestBody:
+        description: Create a new sensor 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sensor'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sensor'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Sensor not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+
+
+  /sensors/{sensorId}:
+    parameters:
+    - name: sensorId
+      in: path
+      required: true
+      schema: 
+        type: integer
+        format: int64
+    put:
+      tags:
+        - Sensor Manager Service
+      summary: Update an existing sensor.
+      description: Update an existing sensor by ID.
+      operationId: updateSensor
+      requestBody:
+        description: Update an existent sensor 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sensor'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sensor'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Sensor not found
+        '500':
+          description: Server error
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    get:
+      tags:
+        - Sensor Manager Service
+      summary: Get information about a sensor.
+      description: Create a new sensor by ID.
+      operationId: getSensor
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sensor'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Sensor not found
+        '500':
+          description: Server error
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"    
+    patch:
+      tags:
+        - Sensor Manager Service
+      summary: Partially update a sensor
+      description: |
+        Частичное обновление свойств устройства с помощью JSON Merge Patch.
+        Передавайте **только** поля, которые нужно изменить.
+      operationId: patchSensor
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/SensorPatch'
+      responses:
+        '200':
+          description: Sensor updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sensor'
+        '400':
+          description: Invalid input
+        '404':
+          description: Sensor not found
+        '409':
+          description: Version conflict
+        '500':
+          description: Server error
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              
+    delete:
+      tags:
+        - Sensor Manager Service
+      summary: Delete a sensor.
+      description: Remove a sensor by ID.
+      operationId: deleteSensor
+      responses:
+        '204':
+          description: Sensor deleted successfully
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Sensor not found
+        '500':
+          description: Server error
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /scenarios:
+    post:
+      tags:
+        - Scenario Manager Service
+      summary: Create a new scenario.
+      description: Create a new scenario to automate device actions.
+      operationId: createScenario
+      requestBody:
+        description: Scenario object that needs to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Scenario'
+      responses:
+        '200':
+          description: Scenario created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scenario'
+        '400':
+          description: Invalid input
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /scenarios/{scenarioId}:
+    parameters:
+      - name: scenarioId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      tags:
+        - Scenario Manager Service
+      summary: Get a scenario by ID.
+      description: Retrieve details of a single scenario.
+      operationId: getScenario
+      responses:
+        '200':
+          description: Scenario details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scenario'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Scenario not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      tags:
+        - Scenario Manager Service
+      summary: Update an existing scenario.
+      description: Update the properties of a scenario by ID.
+      operationId: updateScenario
+      requestBody:
+        description: Updated scenario object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Scenario'
+      responses:
+        '200':
+          description: Scenario updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scenario'
+        '400':
+          description: Invalid input
+        '404':
+          description: Scenario not found
+        '500':
+          description: Server error
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Scenario Manager Service
+      summary: Delete a scenario.
+      description: Remove a scenario by ID.
+      operationId: deleteScenario
+      responses:
+        '204':
+          description: Scenario deleted successfully
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Scenario not found
+        '500':
+          description: Server error
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /telemetry:
+     get:
+      tags:
+        - Telemetry Manager Service
+      summary: List telemetry entries
+      description: Retrieve a paginated list of telemetry records
+      parameters:
+        - in: query
+          name: device_id
+          schema:
+            type: integer
+            format: int64
+          description: Filter by device ID
+        - in: query
+          name: metric_name
+          schema:
+            type: string
+            enum:
+              - TEMPERATURE
+              - HUMIDITY
+              - STATUS
+            example: TEMPERATURE
+          description: Filter by metric type
+        - in: query
+          name: start_timestamp
+          schema:
+            type: string
+            format: date-time
+          description: Start of time range (inclusive)
+        - in: query
+          name: end_timestamp
+          schema:
+            type: string
+            format: date-time
+          description: End of time range (inclusive)
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Page number
+        - in: query
+          name: size
+          schema:
+            type: integer
+            default: 50
+          description: Number of items per page
+      responses:
+        '200':
+          description: A paginated list of telemetry records
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    description: Total number of records
+                  page:
+                    type: integer
+                  size:
+                    type: integer
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Telemetry'
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Some Error has occured"
+    Sensor:
+      required:
+        - id
+        - uuid
+        - user_id
+        - type_code
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        uuid:
+          type: string
+          format: UUID
+          example: "dev-a8329"
+        user_id:
+          type: integer
+          format: int64
+          example: 12314044224
+        room_id:
+          type: integer
+          format: int64
+          nullable: true
+          example: 10020
+        type_code:
+          type: string
+          example: "HEATING"
+        model:
+          type: string
+          example: "Mijia"
+        label:
+          type: string
+          example: "Heating in living room"
+        status:
+          type: string
+          enum:
+            - ONLINE
+            - OFFLINE
+            - ERROR
+            - ...
+          example: "ONLINE"
+        created_at:
+          type: string
+          description: "Дата и время добавления (UTC)"
+          format: date-time
+        last_seen_at:
+          type: string
+          description: "Дата и время последнего онлайна сенсора (UTC)"
+          format: date-time
+          
+    Scenario:
+      required:
+        - id
+        - user_id
+        - device_id
+        - device_uuid
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 8457
+        user_id:
+          type: integer
+          format: int64
+          example: 12314044224
+        name:
+          type: string
+          example: "Turn off heating when temps reach 25C"
+        device_id:
+          type: integer
+          format: int64
+          example: 10
+        device_uuid:
+          type: string
+          format: UUID
+          example: "dev-a8329"
+        action_code:
+          type: string
+          description: "Флаг, указывающий, на действие в сценарии"
+          enum:
+            - SWITCH_ON
+            - SWITCH_OFF
+            - SET_TEMP
+            - …  # другие коды действий
+          example: "SWITCH_ON"
+        parameters:
+          type: object
+          description: "Произвольный JSON-payload с параметрами команды"
+          additionalProperties: true
+          example:
+            temperature: 22
+            mode: "eco"
+        cron_expr:
+          type: string
+          nullable: true
+          description: "CRON-выражение для периодических задач, или null для event-driven"
+          example: "0 8 * * *"
+        is_enabled:
+          type: boolean
+          description: "Флаг, указывающий, активен ли сценарий"
+          example: true
+        created_at:
+          type: string
+          format: date-time
+          description: "Дата и время создания сценария (UTC)"
+          example: "2025-07-06T14:30:00Z"
+          
+    Telemetry:
+      required:
+        - id
+        - device_id
+        - device_uuid
+        - timestamp
+        - metric_name
+        - numeric_val
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 54745654
+        device_id:
+          type: integer
+          format: int64
+          example: 10
+        device_uuid:
+          type: string
+          format: UUID
+          example: "dev-a8329"
+        timestamp:
+          type: string
+          format: date-time
+          description: "Дата и время создания телеметрии (UTC)"
+        metric_name:
+          type: string
+          enum:
+            - TEMPERATURE
+            - HUMIDITY
+            - STATUS
+            - ...
+          example: TEMPERATURE
+        numeric_val:
+          type: integer
+          format: int64
+          example: 25
+    SensorPatch:
+      type: object
+      description: |
+        Partial sensor update (JSON Merge Patch).  
+        Присутствуют **только** изменяемые поля.
+      properties:
+        room_id:
+          type: integer
+          format: int64
+          nullable: true
+          example: 10020
+        label:
+          type: string
+          example: "Heating in living room"
+        status:
+          type: string
+          enum: [ONLINE, OFFLINE, ERROR]
+          example: "OFFLINE"
+
+
+
+
