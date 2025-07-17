@@ -1,13 +1,14 @@
-FROM python:3.11-slim
-
+# Build stage
+FROM golang:1.22 AS builder
 WORKDIR /app
+COPY go.mod .
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -o temperature-api
 
-COPY requirements.txt /app
-
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . /app
-
+# Final stage
+FROM gcr.io/distroless/base-debian11
+WORKDIR /app
+COPY --from=builder /app/temperature-api .
 EXPOSE 8081
-
-CMD ["gunicorn", "--bind", "0.0.0.0:8081", "main:app"]
+ENTRYPOINT ["/app/temperature-api"]
